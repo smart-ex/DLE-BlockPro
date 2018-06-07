@@ -196,7 +196,7 @@ class base {
 	 *
 	 * @return string URL для категории
 	 */
-
+ 
 	public function getPostUrl($data) {
 
 		$data['date'] = strtotime($data['date']);
@@ -205,10 +205,13 @@ class base {
 			if (
 				($this->dle_config['version_id'] < 9.6 && $this->dle_config['seo_type'])
 				||
-				($this->dle_config['version_id'] >= 9.6 && ($this->dle_config['seo_type'] == 1 || $this->dle_config['seo_type'] == 2))
+				($this->dle_config['version_id'] >= 9.6 && ($this->dle_config['seo_type'] == 1 || $this->dle_config['seo_type'] == 2 || $this->dle_config['seo_type'] == 3))
 			) {
 				if (intval($data['category']) && $this->dle_config['seo_type'] == 2) {
 					$url = $this->dle_config['http_home_url'] . get_url(intval($data['category'])) . '/' . $data['id'] . '-' . $data['alt_name'] . '.html';
+				}
+				if (intval($data['category']) && $this->dle_config['seo_type'] == 3) {
+					$url = $this->dle_config['http_home_url'] . get_url(intval($data['category'])) . '/' . $data['id'];
 				} else {
 					$url = $this->dle_config['http_home_url'] . $data['id'] . '-' . $data['alt_name'] . '.html';
 				}
