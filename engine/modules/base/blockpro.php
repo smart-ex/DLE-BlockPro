@@ -12,7 +12,9 @@ email:   pafnuty10@gmail.com
  */
 
 if (!defined('DATALIFEENGINE')) {
-	die('Go fuck yourself!');
+	header( "HTTP/1.1 403 Forbidden" );
+	header ( 'Location: ../../' );
+	die( "Hacking attempt!" );
 }
 
 /**
@@ -259,7 +261,7 @@ if ($cfg['cacheLive']) {
 
 // Определяемся с шаблоном сайта
 // Проверим куку пользователя и наличие параметра skin в реквесте.
-$currentSiteSkin = (isset($_COOKIE['dle_skin'])) ? trim(totranslit($_COOKIE['dle_skin'], false, false)) : (isset($_REQUEST['skin'])) ? trim(totranslit($_REQUEST['skin'], false, false)) : $config['skin'];
+$currentSiteSkin = (isset($_COOKIE['dle_skin'])) ? trim(totranslit($_COOKIE['dle_skin'], false, false)) : ((isset($_REQUEST['skin'])) ? trim(totranslit($_REQUEST['skin'], false, false)) : $config['skin']);
 
 // Если  итоге пусто — назначим опять шаблон из конфига. 
 if ($currentSiteSkin == '') {
