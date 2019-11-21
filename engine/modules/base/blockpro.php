@@ -56,6 +56,8 @@ if ($isAjaxConfig) {
 
 		'nocache'   => !empty($nocache) ? $nocache : false,
 		// Не использовать кеш
+		'noquery'   => !empty($noquery) ? $noquery : false,
+		// Не делать запрос в бд
 		'cacheLive' => (!empty($cacheLive) && !$mcache) ? $cacheLive : false,
 		// Время жизни кеша в минутах
 
@@ -63,7 +65,7 @@ if ($isAjaxConfig) {
 		// C какой новости начать вывод
 		'limit'     => !empty($limit) ? $limit : '10',
 		// Количество новостей в блоке
-		'fixed'     => !empty($fixed) ? $fixed : 'yes',
+		'fixed'     => !empty($fixed) ? $fixed : 'ignore',
 		// Обработка фиксированных новостей (yes/only/without показ всех/только фиксированных/только обычных новостей)
 		'allowMain' => !empty($allowMain) ? $allowMain : 'yes',
 		// Обработка новостей, опубликованных на главной (yes/only/without показ всех/только на главной/только не на главной)
@@ -957,7 +959,12 @@ if (!$output) {
 	$_startFrom = ($base->cfg['pageNum'] >= 1) ? ($base->cfg['limit'] * $base->cfg['pageNum'] - $base->cfg['limit'] + $base->cfg['startFrom']) : 0;
 
 	// Получаем новости
-	$list = $base->db->getAll($query, $selectRows, PREFIX . '_post', PREFIX . '_post_extras', $ext_query . $where, $_startFrom, $base->cfg['limit']);
+	if($base->cfg['noquery']){
+		$list = [];
+	}else{
+
+		$list = $base->db->getAll($query, $selectRows, PREFIX . '_post', PREFIX . '_post_extras', $ext_query . $where, $_startFrom, $base->cfg['limit']);
+	}
 
 	// Обрабатываем данные функцией stripslashes рекурсивно.
 	$list = stripSlashesInArray($list);
