@@ -1,6 +1,6 @@
 # Redactors
 /.idea/
-
+settings.json
 
 # Installed DLE
 /engine/cache/*.tmp
