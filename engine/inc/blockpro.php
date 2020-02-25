@@ -6,7 +6,6 @@ BlockPro
 Автор:   ПафНутиЙ
 URL:     http://pafnuty.name/
 twitter: https://twitter.com/pafnuty_name
-google+: http://gplus.to/pafnuty
 email:   pafnuty10@gmail.com
 =============================================================================
 */
@@ -29,7 +28,7 @@ if ($member_id['user_group'] != '1') {
 define('MODULE_DIR', ENGINE_DIR . '/modules/base/admin/blockpro/');
 
 $moduleName    = 'blockpro';
-$moduleVersion = '5.1.4';
+$moduleVersion = '6.0.2';
 
 $moderate              = $_REQUEST['moderate'];
 $moderate_checked      = ($moderate) ? 'checked' : '';
@@ -89,60 +88,11 @@ $thisCatOnly_checked   = ($thisCatOnly) ? 'checked' : '';
 $setFilter             = $_REQUEST['setFilter'];
 $experiment            = $_REQUEST['experiment'];
 $experiment_checked    = ($experiment) ? 'checked' : '';
+$multiLang             = $_REQUEST['multiLang'];
+$multiLang_checked     = ($multiLang) ? 'checked' : '';
+$langList              = $_REQUEST['langList'];
 
-
-$cfg = [
-	'moderate'       => !empty($moderate) ? $moderate : false,
-	'template'       => !empty($template) ? $template : 'blockpro/blockpro',
-	'cachePrefix'    => !empty($cachePrefix) ? $cachePrefix : 'news',
-	'cacheSuffixOff' => !empty($cacheSuffixOff) ? true : false,
-	'cacheNameAddon' => '',
-	'nocache'        => !empty($nocache) ? $nocache : false,
-	'cacheLive'      => (!empty($cacheLive) && !$mcache) ? $cacheLive : false,
-	'startFrom'      => !empty($startFrom) ? $startFrom : '0',
-	'limit'          => !empty($limit) ? $limit : '10',
-	'fixed'          => !empty($fixed) ? $fixed : 'yes',
-	'allowMain'      => !empty($allowMain) ? $allowMain : 'yes',
-	'postId'         => !empty($postId) ? $postId : '',
-	'notPostId'      => !empty($notPostId) ? $notPostId : '',
-	'author'         => !empty($author) ? $author : '',
-	'notAuthor'      => !empty($notAuthor) ? $notAuthor : '',
-	'xfilter'        => !empty($xfilter) ? $xfilter : '',
-	'notXfilter'     => !empty($notXfilter) ? $notXfilter : '',
-	'xfSearch'       => !empty($xfSearch) ? $xfSearch : false,
-	'notXfSearch'    => !empty($notXfSearch) ? $notXfSearch : false,
-	'xfSearchLogic'  => !empty($xfSearchLogic) ? $xfSearchLogic : 'OR',
-	'catId'          => !empty($catId) ? $catId : '',
-	'subcats'        => !empty($subcats) ? $subcats : false,
-	'notCatId'       => !empty($notCatId) ? $notCatId : '',
-	'notSubcats'     => !empty($notSubcats) ? $notSubcats : false,
-	'thisCatOnly'    => !empty($thisCatOnly) ? $thisCatOnly : false,
-	'tags'           => !empty($tags) ? $tags : '',
-	'notTags'        => !empty($notTags) ? $notTags : '',
-	'day'            => !empty($day) ? $day : false,
-	'dayCount'       => !empty($dayCount) ? $dayCount : false,
-	'sort'           => !empty($sort) ? $sort : 'top',
-	'xfSortType'     => !empty($xfSortType) ? $xfSortType : 'int',
-	'order'          => !empty($order) ? $order : 'new',
-	'avatar'         => !empty($avatar) ? $avatar : false,
-	'showstat'       => !empty($showstat) ? $showstat : false,
-	'related'        => !empty($related) ? $related : false,
-	'saveRelated'    => !empty($saveRelated) ? $saveRelated : false,
-	'showNav'        => !empty($showNav) ? $showNav : false,
-	'navDefaultGet'  => !empty($navDefaultGet) ? $navDefaultGet : false,
-	'pageNum'        => !empty($pageNum) ? $pageNum : '1',
-	'navStyle'       => !empty($navStyle) ? $navStyle : 'classic',
-	'options'        => !empty($options) ? $options : false,
-	'notOptions'     => !empty($notOptions) ? $notOptions : false,
-	'future'         => !empty($future) ? $future : false,
-	'cacheVars'      => !empty($cacheVars) ? $cacheVars : false,
-	'symbols'        => !empty($symbols) ? $symbols : false,
-	'notSymbols'     => !empty($notSymbols) ? $notSymbols : false,
-	'fields'         => !empty($fields) ? $fields : false,
-	'setFilter'      => !empty($setFilter) ? $setFilter : '',
-	'experiment'     => !empty($experiment) ? $experiment : false,
-
-];
+include ENGINE_DIR . '/modules/base/core/config.php';
 
 /**
  * var array $bpConfig
@@ -434,6 +384,10 @@ function base_create_cache($prefix, $cache_text, $cache_id = false, $member_pref
 											unset($cfg['xfSortType']);
 										}
 
+                                        if ($cfg['langList'] == 'en') {
+                                            unset($cfg['langList']);
+                                        }
+
 										$filteredCfg = array_filter($cfg);
 										if (count($filteredCfg) > 0) {
 											$moduleUrl .= '?';
@@ -458,9 +412,10 @@ function base_create_cache($prefix, $cache_text, $cache_id = false, $member_pref
 													    $block  = $('#preview_tab');
 													$block.addClass('base-loader loading');
 													$.ajax({
-														url: dle_root + 'engine/ajax/blockpro.php',
+														url: dle_root + 'engine/ajax/controller.php',
 														dataType: 'html',
 														data: {
+														    mod: 'blockpro',
 															pageNum: pageNum,
 															blockId: blockId
 														},
@@ -733,7 +688,7 @@ function base_create_cache($prefix, $cache_text, $cache_id = false, $member_pref
 								<div class="col col-mb-12 mb10">
 									<div class="alert">
 										<p>
-											Начиная с версии 5.0.0 техническая поддержка по модулю оказывается ТОЛЬКО в рамках тиккетов на GitHub 
+											Начиная с версии 5.0.0 техническая поддержка по модулю оказывается ТОЛЬКО в рамках тиккетов на GitHub
 										</p>
 									</div>
 									<a class="btn omni-email-widget" href="https://github.com/dle-modules/DLE-BlockPro/issues/new" target="_blank">Создать тиккет</a>
@@ -758,9 +713,5 @@ function base_create_cache($prefix, $cache_text, $cache_id = false, $member_pref
 		</div>
 	</div>
 </div>
-<?php 
-		
-?>
-
 </body>
 </html>
